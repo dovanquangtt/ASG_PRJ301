@@ -1,0 +1,103 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 6, 2025, 11:00:54 PM
+    Author     : admin
+*/
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #2c0d0d;
+    color: white;
+}
+.header-bar {
+    background: #d84315;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+.navbar {
+    background: #bf360c;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    cursor: pointer;
+}
+.navbar a:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+.content {
+    padding: 20px;
+    text-align: center;
+}
+.form-container {
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    background: #1c1c1c;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+.form-container h3 {
+    color: #ff5722;
+    text-align: center;
+}
+.list-container {
+    display: none;
+    margin-top: 20px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+table, th, td {
+    border: 1px solid #ddd;
+}
+th, td {
+    padding: 12px;
+    text-align: center;
+    color: black;
+}
+th {
+    background: #d84315;
+    color: white;
+}
+.action-btn {
+    padding: 8px 12px;
+    margin: 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.update-btn {
+    background: #ff9800;
+    color: white;
+}
+.delete-btn {
+    background: #d32f2f;
+    color: white;
+}
+

@@ -4,8 +4,7 @@
  */
 package dal;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import model.Account;
@@ -38,7 +37,7 @@ public class AccountDAO extends DBContext {
     }
 
     public List<Account> getAllAccount() {
-        List<Account> acc = new ArrayList<>();
+        List<Account> list = new ArrayList<>();
         String sql = "select * from Account";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -48,61 +47,76 @@ public class AccountDAO extends DBContext {
                 account.setId(rs.getInt(1));
                 account.setUsername(rs.getString(2));
                 account.setPassword(rs.getString(3));
-                acc.add(account);
+                list.add(account);
             }
-
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace();;
         }
-        return acc;
+        return list;
     }
 
-    public void AddAccount(Account account) {
+    public Account getAccountById(int id) {
+        String sql = "SELECT * FROM accounts WHERE id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Account account = new Account();
+                account.getId();
+                account.getUsername();
+                account.getPassword();
+                return account;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();;
+        }
+        return null;
+    }
+
+    public void addAccount(Account account) {
         String sql = "INSERT INTO [dbo].[Account]\n"
                 + "           ([Id]\n"
                 + "           ,[Username]\n"
-                + "           ,[Password]\n"
-                + "           ,[EmployeeId])\n"
+                + "           ,[Password])\n"
                 + "     VALUES\n"
-                + "           (? ,?,?,?) ";
+                + "           (?,?,?)";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, account.getUsername());
-            ps.setString(2, account.getPassword());
+            ps.setInt(1, account.getId());
+            ps.setString(2, account.getUsername());
+            ps.setString(3, account.getPassword());
             ps.executeUpdate();
-
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace();;
         }
-
     }
 
     public void updateAccount(Account account) {
         String sql = "UPDATE [dbo].[Account]\n"
                 + "   SET [Username] = ?\n"
                 + "      ,[Password] = ?\n"
-                + "      ,[EmployeeId] = ?\n"
-                + " WHERE [Id] = ? ";
+                + " WHERE  [Id] = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, account.getUsername());
             ps.setString(2, account.getPassword());
-            ps.setInt(4, account.getId());
+            ps.setInt(3, account.getId());
             ps.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace();;
         }
     }
 
     public void deleteAccount(int id) {
         String sql = "DELETE FROM [dbo].[Account]\n"
-                + "      WHERE Id = ? ";
+                + "      WHERE [Id] = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace();;
         }
     }
 

@@ -11,21 +11,20 @@ import java.util.Date;
  * @author admin
  */
 public class Employee {
+
     private int id;
     private String ten;
     private Date dob;
-    private int divisionId;
-    private int Role;
+    private int ParentEmployee;
 
     public Employee() {
     }
 
-    public Employee(int id, String ten, Date dob, int divisionId, int Role) {
+    public Employee(int id, String ten, Date dob, int ParentEmployee) {
         this.id = id;
         this.ten = ten;
         this.dob = dob;
-        this.divisionId = divisionId;
-        this.Role = Role;
+        this.ParentEmployee = ParentEmployee;
     }
 
     public int getId() {
@@ -52,22 +51,12 @@ public class Employee {
         this.dob = dob;
     }
 
-    public int getDivisionId() {
-        return divisionId;
+    public int getParentEmployee() {
+        return ParentEmployee;
     }
 
-    public void setDivisionId(int divisionId) {
-        this.divisionId = divisionId;
+    public void setParentEmployee(int ParentEmployee) {
+        this.ParentEmployee = ParentEmployee;
     }
 
-    public int getRole() {
-        return Role;
-    }
-
-    public void setRole(int Role) {
-        this.Role = Role;
-    }
-    
-    
-    
 }

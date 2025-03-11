@@ -9,17 +9,22 @@ package model;
  * @author admin
  */
 public class Account {
+
     private int id;
     private String username;
     private String password;
+    private int EmployeeId;
+    private int roleId;
 
     public Account() {
     }
 
-    public Account(int id, String username, String password) {
+    public Account(int id, String username, String password, int EmployeeId, int roleId) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.EmployeeId = EmployeeId;
+        this.roleId = roleId;
     }
 
     public int getId() {
@@ -45,6 +50,21 @@ public class Account {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    
-}
+
+    public int getEmployeeId() {
+        return EmployeeId;
+    }
+
+    public void setEmployeeId(int EmployeeId) {
+        this.EmployeeId = EmployeeId;
+    }
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
+
+ }

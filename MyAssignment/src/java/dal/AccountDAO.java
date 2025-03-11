@@ -28,6 +28,7 @@ public class AccountDAO extends DBContext {
                 account.setId(rs.getInt(1));
                 account.setUsername(rs.getString(2));
                 account.setPassword(rs.getString(3));
+                account.setRoleId(rs.getInt(4));
                 return account;
             }
         } catch (Exception e) {
@@ -47,6 +48,7 @@ public class AccountDAO extends DBContext {
                 account.setId(rs.getInt(1));
                 account.setUsername(rs.getString(2));
                 account.setPassword(rs.getString(3));
+                account.setRoleId(rs.getInt(4));
                 list.add(account);
             }
         } catch (Exception e) {
@@ -66,6 +68,7 @@ public class AccountDAO extends DBContext {
                 account.getId();
                 account.getUsername();
                 account.getPassword();
+                account.getRoleId();
                 return account;
             }
         } catch (Exception e) {
@@ -86,6 +89,7 @@ public class AccountDAO extends DBContext {
             ps.setInt(1, account.getId());
             ps.setString(2, account.getUsername());
             ps.setString(3, account.getPassword());
+            ps.setInt(4, account.getRoleId());
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();;
@@ -101,7 +105,8 @@ public class AccountDAO extends DBContext {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, account.getUsername());
             ps.setString(2, account.getPassword());
-            ps.setInt(3, account.getId());
+            ps.setInt(3, account.getRoleId());
+            ps.setInt(4, account.getId());
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();;

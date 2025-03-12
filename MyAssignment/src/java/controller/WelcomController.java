@@ -4,7 +4,6 @@
  */
 package controller;
 
-import dal.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,13 +11,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 import model.Account;
 
 /**
  *
  * @author admin
  */
-public class LoginController extends HttpServlet {
+public class WelcomController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +37,10 @@ public class LoginController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginController</title>");
+            out.println("<title>Servlet WelcomController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet WelcomController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,7 +58,20 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        Account acc = (Account) session.getAttribute("account");
+        if (acc == null) {
+            response.sendRedirect("login");
+        } else {
+            switch (acc.getRoleId()) {
+                case 1:
+                    request.getRequestDispatcher("admin.jsp").forward(request, response);
+                case 2:
+                    request.getRequestDispatcher("manager.jsp").forward(request, response);
+                case 3:
+                    request.getRequestDispatcher("employee.jsp").forward(request, response);
+            }
+        }
     }
 
     /**
@@ -72,29 +85,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        try {
-            AccountDAO accountDAO = new AccountDAO();
-            Account acc = accountDAO.validateUser(username, password);
-
-            if (acc == null) {
-                // Login failed: Set an error message and forward back to index.jsp
-                //response.getWriter().print("login failded");
-                request.setAttribute("error", "Invalid username or password");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            } else {
-                // Login successful: Store the account in the session and redirect to a welcome page
-                HttpSession session = request.getSession();
-                session.setAttribute("account", acc);
-                response.sendRedirect("welcome"); // Create a welcome.jsp for success
-            }
-        } catch (Exception e) {
-            // Log the exception and forward an error message
-            request.setAttribute("error", "An error occurred during login");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-            e.printStackTrace(); // Log the exception for debugging
-        }
+        processRequest(request, response);
     }
 
     /**

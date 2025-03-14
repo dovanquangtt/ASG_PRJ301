@@ -92,7 +92,7 @@ public class LoginController extends HttpServlet {
         } catch (Exception e) {
             // Log the exception and forward an error message
             request.setAttribute("error", "An error occurred during login");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("login.jsp").forward(request, response);
             e.printStackTrace(); // Log the exception for debugging
         }
     }

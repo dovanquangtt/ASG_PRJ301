@@ -58,18 +58,20 @@
         </div>
         <div id="leaveForm" class="form-container">
             <h3>Leave Request Form</h3>
-            <p><strong>User:</strong> Mr. Tèo, <strong>Role:</strong> Employee, <strong>Department:</strong> IT</p>
-            <label for="startDate">From:</label>
-            <input type="date" id="startDate" style="width: 100%;">
-            <br><br>
-            <label for="endDate">To:</label>
-            <input type="date" id="endDate" style="width: 100%;">
-            <br><br>
-            <label for="reason">Reason:</label>
-            <br>
-            <textarea id="reason" rows="3" style="width: 100%;"></textarea>
-            <br><br>
-            <button class="submit-btn">Submit</button>
+            <form action="rep" method="POST">
+                <p><strong>User:</strong> Mr. Tèo, <strong>Role:</strong> Employee, <strong>Department:</strong> IT</p>
+                <label>From:</label>
+                <input type="date" name="startDate" style="width: 100%;">
+                <br><br>
+                <label >To:</label>
+                <input type="date" name="endDate" style="width: 100%;">
+                <br><br>
+                <label>Reason:</label>
+                <br>
+                <textarea name="reason" rows="3" style="width: 100%;"></textarea>
+                <br><br>
+                <button class="submit-btn">Submit</button>
+            </form>
         </div>
         <div id="leaveList" class="list-container">
             <table>

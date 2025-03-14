@@ -4,14 +4,14 @@
  */
 package model;
 
-import java.util.Date;
+import java.sql.*;
 
 /**
  *
  * @author admin
  */
 public class Request {
-    private int id;
+
     private int employeeId;
     private Date dateTo;
     private Date DateFrom;
@@ -22,22 +22,13 @@ public class Request {
     public Request() {
     }
 
-    public Request(int id, int employeeId, Date dateTo, Date DateFrom, Date dateCreate, String reason, String Status) {
-        this.id = id;
+    public Request(int employeeId, Date dateTo, Date DateFrom, Date dateCreate, String reason, String Status) {
         this.employeeId = employeeId;
         this.dateTo = dateTo;
         this.DateFrom = DateFrom;
         this.dateCreate = dateCreate;
         this.reason = reason;
         this.Status = Status;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getEmployeeId() {
@@ -87,6 +78,5 @@ public class Request {
     public void setStatus(String Status) {
         this.Status = Status;
     }
-    
-    
+
 }

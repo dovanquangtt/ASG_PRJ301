@@ -28,7 +28,8 @@ public class AccountDAO extends DBContext {
                 account.setId(rs.getInt(1));
                 account.setUsername(rs.getString(2));
                 account.setPassword(rs.getString(3));
-                account.setRoleId(rs.getInt(4));
+                account.setEmployeeId(rs.getInt(4));
+                account.setRoleId(rs.getInt(5));
                 return account;
             }
         } catch (Exception e) {
@@ -94,6 +95,13 @@ public class AccountDAO extends DBContext {
         } catch (Exception e) {
             e.printStackTrace();;
         }
+    }
+
+    public static void main(String[] args) {
+        AccountDAO account = new AccountDAO();
+        Account acc = account.validateUser("employee2", "pass123");
+        System.out.println(acc.getRoleId());
+
     }
 
 }

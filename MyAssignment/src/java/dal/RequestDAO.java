@@ -68,26 +68,19 @@ public class RequestDAO extends DBContext {
 
     public int insert(Request request) {
         int result = -1;
-        String sql = "INSERT INTO [dbo].[Request] "
-                + "([EmployeeId], [DateTo], [DateFrom], [DateCreate], [Reason], [Status]) "
+        String sql = "INSERT INTO [dbo].[Request] ( [EmployeeId], [DateTo], [DateFrom], [DateCreate], [Reason], [Status]) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
-
+        // Sử dụng try-with-resources để tự động đóng PreparedStatement
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, request.getEmployeeId());
             st.setDate(2, request.getDateTo());
             st.setDate(3, request.getDateFrom());
             st.setDate(4, request.getDateCreate());
-            st.setString(5, request.getReason());
+            st.setString(5, request.getReason()); // Nếu đổi tên thuộc tính, thì đây thành getReason()
             st.setString(6, request.getStatus());
-
             result = st.executeUpdate();
-            if (result > 0) {
-                System.out.println("Insert successful, rows affected: " + result);
-            } else {
-                System.out.println("Insert failed");
-            }
         } catch (SQLException ex) {
-            System.err.println("SQL Error: " + ex.getMessage());
+            // Log lỗi để tiện debug
             ex.printStackTrace();
         }
         return result;
@@ -128,6 +121,36 @@ public class RequestDAO extends DBContext {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public static void main(String[] args) {
+        RequestDAO requestDAO = new RequestDAO();
+
+        // Dữ liệu giả để test
+        int employeeId = 2;  // Giả sử EmployeeId là 2
+        Date fromDate = Date.valueOf("2025-03-17");
+        Date toDate = Date.valueOf("2025-03-20");
+        Date createDate = Date.valueOf(LocalDate.now());
+        String reason = "Take a vacation";
+        String status = "Pending";
+
+        // Tạo object Request
+        Request request = new Request();
+        request.setEmployeeId(employeeId);
+        request.setDateFrom(fromDate);
+        request.setDateTo(toDate);
+        request.setDateCreate(createDate);
+        request.setReason(reason);
+        request.setStatus(status);
+
+        // Gọi hàm insert
+        int result = requestDAO.insert(request);
+
+        if (result > 0) {
+            System.out.println("Insert thành công!");
+        } else {
+            System.out.println("Insert thất bại!");
+        }
     }
 
 }

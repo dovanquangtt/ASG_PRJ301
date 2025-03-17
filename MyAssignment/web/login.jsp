@@ -14,6 +14,10 @@
     <body>
         <div class="login-container"> <!-- Wrap the form in this div for styling -->
             <h1>Login</h1>
+            <% String error = request.getParameter("error"); %>
+        <% if (error != null) { %>
+            <p class="error">Sai thông tin đăng nhập. Vui lòng thử lại.</p>
+        <% } %>
             <form action="login" method="POST">
                 <table>
                     <tbody>

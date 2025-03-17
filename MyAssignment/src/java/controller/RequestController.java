@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Account;
 import model.Request;
+import java.sql.*;
 
 /**
  *
@@ -63,7 +64,7 @@ public class RequestController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/welcome.jsp").forward(request, response);
+      
     }
 
     /**
@@ -81,79 +82,49 @@ public class RequestController extends HttpServlet {
         Account account = (Account) session.getAttribute("account");
         if (account == null) {
             response.sendRedirect("login");
-            return;
         }
-
-        String dateFrom = request.getParameter("startDate");
-        String dateTo = request.getParameter("endDate");
-        String reason = request.getParameter("reason");
+        String DateFrom = request.getParameter("startDate");
+        String DateTo = request.getParameter("endDate");
+        String Reason = request.getParameter("reason");
         List<String> error = new ArrayList<>();
-
-        // Check for empty or null inputs
-        if (dateFrom == null || dateFrom.trim().isEmpty()) {
-            error.add("Vui lòng nhập ngày bắt đầu.");
-        }
-        if (dateTo == null || dateTo.trim().isEmpty()) {
-            error.add("Vui lòng nhập ngày kết thúc.");
-        }
-        if (reason == null || reason.trim().isEmpty()) {
-            error.add("Vui lòng nhập lý do nghỉ phép.");
+        if (Reason == null || DateTo == null || DateFrom == null) {
+            error.add("Dữ liệu không hợp lệ, nhập lại.");
+            request.getRequestDispatcher("createForm.jsp").forward(request, response);
         }
 
+        Date datefrom = Date.valueOf(DateFrom);
+        Date dateto = Date.valueOf(DateTo);
+        Date now = Date.valueOf(LocalDate.now());
+
+        if (datefrom.after(dateto)) {
+            error.add("Ngày bắt đầu nghỉ không thể sau ngày kết thúc nghỉ.");
+            
+        }
+        if (dateto.before(now)) {
+            error.add("Ngày kết thúc nghỉ không thể là quá khứ.");
+            
+        }
+        if (datefrom.before(now)) {
+            error.add("Ngày bắt đầu nghỉ không thể là quá khứ.");
+            
+        }
+        if (dateto.before(datefrom)) {
+            error.add("Ngày kết thúc nghỉ không thể trước ngày bắt đầu nghỉ.");
+            
+        }
         if (!error.isEmpty()) {
             request.setAttribute("error", error);
-            request.setAttribute("startDate", dateFrom);
-            request.setAttribute("endDate", dateTo);
-            request.setAttribute("reason", reason);
-            request.getRequestDispatcher("/welcome.jsp").forward(request, response); // Ensure correct JSP path
-            return;
+            request.getRequestDispatcher("createForm.jsp").forward(request, response);
+            
+        }else{
+        RequestDAO requestdao = new RequestDAO();
+        Request re = new Request(0, account.getEmployeeId(), dateto, datefrom, now, Reason, "Pending");
+        requestdao.insert(re);
+        request.setAttribute("message", "Submit successfully");
+        request.getRequestDispatcher("createForm.jsp").forward(request, response);
+        
         }
-
-        try {
-            Date dateFromSql = Date.valueOf(dateFrom);
-            Date dateToSql = Date.valueOf(dateTo);
-            Date now = Date.valueOf(LocalDate.now());
-
-            // Additional validations
-            if (dateFromSql.after(dateToSql)) {
-                error.add("Ngày bắt đầu không thể sau ngày kết thúc.");
-            }
-            if (dateToSql.before(now)) {
-                error.add("Ngày kết thúc không thể là quá khứ.");
-            }
-            if (dateFromSql.before(now)) {
-                error.add("Ngày bắt đầu không thể là quá khứ.");
-            }
-
-            if (!error.isEmpty()) {
-                request.setAttribute("error", error);
-                request.setAttribute("startDate", dateFrom);
-                request.setAttribute("endDate", dateTo);
-                request.setAttribute("reason", reason);
-                request.getRequestDispatcher("/welcome.jsp").forward(request, response);
-                return;
-            }
-
-            // Insert to database
-            RequestDAO requestDAO = new RequestDAO();
-            Request re = new Request(0, account.getEmployeeId(), dateToSql, dateFromSql, now, reason, "Pending");
-            int result = requestDAO.insert(re);
-
-            if (result > 0) {
-                request.setAttribute("message", "Đơn nghỉ phép đã được gửi thành công!");
-            } else {
-                error.add("Có lỗi xảy ra khi gửi đơn. Vui lòng thử lại.");
-                request.setAttribute("error", error);
-            }
-
-        } catch (IllegalArgumentException e) {
-            error.add("Định dạng ngày không hợp lệ.");
-            request.setAttribute("error", error);
-        }
-
-        // Always forward to welcome.jsp after processing
-        request.getRequestDispatcher("/welcome.jsp").forward(request, response);
-
+       
     }
 
     /**

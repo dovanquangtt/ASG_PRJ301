@@ -58,7 +58,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
     /**
@@ -72,29 +72,22 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        try {
+        response.setContentType("text/html;charset=UTF-8");
+        String u = request.getParameter("username");
+        String p = request.getParameter("password");
+        
+         
             AccountDAO accountDAO = new AccountDAO();
-            Account acc = accountDAO.validateUser(username, password);
-
+            Account acc = accountDAO.validateUser(u, p);
+            
             if (acc == null) {
-                // Login failed: Set an error message and forward back to index.jsp
-                //response.getWriter().print("login failded");
-                request.setAttribute("error", "Invalid username or password");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                 response.sendRedirect("login.jsp?error=1");
             } else {
-                // Login successful: Store the account in the session and redirect to a welcome page
                 HttpSession session = request.getSession();
                 session.setAttribute("account", acc);
-                response.sendRedirect("welcome"); // Create a welcome.jsp for success
+                response.sendRedirect("welcome");
             }
-        } catch (Exception e) {
-            // Log the exception and forward an error message
-            request.setAttribute("error", "An error occurred during login");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            e.printStackTrace(); // Log the exception for debugging
-        }
+        
     }
 
     /**

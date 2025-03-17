@@ -18,36 +18,34 @@
             <div class="form-container">
                 <h3>Leave Request Form</h3>
                 <form action="req" method="POST" class="leave-form">
-                    <p class="user-info">
-                        <strong>User:</strong> Mr. Tèo, 
-                        <strong>Role:</strong> Employee, 
-                        <strong>Department:</strong> IT
-                    </p>
                     <div class="form-group">
                         <label for="startDate">From:</label>
-                        <input type="date" id="startDate" name="startDate" value="${requestScope.startDate}">
+                        <input type="date" id="startDate" name="startDate" required">
                     </div>
                     <div class="form-group">
                         <label for="endDate">To:</label>
-                        <input type="date" id="endDate" name="endDate" value="${requestScope.endDate}">
+                        <input type="date" id="endDate" name="endDate" required>
                     </div>
                     <div class="form-group">
                         <label for="reason">Reason:</label>
-                        <textarea id="reason" name="reason" rows="3">${requestScope.reason}</textarea>
+                        <textarea id="reason" name="reason" required></textarea>
                     </div>
                     <button type="submit" class="submit-btn">Submit</button>
                 </form>
 
-                <c:if test="${not empty requestScope.error}">
-                    <ul class="error-message">
-                        <c:forEach var="err" items="${requestScope.error}">
-                            <li>${err}</li>
-                            </c:forEach>
-                    </ul>
+                <c:if test="${not empty error}">
+                    <div class="error-list">
+                        <ul>
+                            <c:forEach var="err" items="${error}">
+                                <li>${err}</li>
+                                </c:forEach>
+                        </ul>
+                    </div>
                 </c:if>
-
-                <c:if test="${not empty requestScope.message}">
-                    <p class="success-message">${requestScope.message}</p>
+                <c:if test="${not empty message}">
+                    <div class="error-list">
+                        <p>${message}</p>
+                    </div>
                 </c:if>
             </div>
         </div>

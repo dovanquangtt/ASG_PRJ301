@@ -63,7 +63,7 @@ public class RequestController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("/welcome.jsp").forward(request, response);
     }
 
     /**
@@ -102,7 +102,10 @@ public class RequestController extends HttpServlet {
 
         if (!error.isEmpty()) {
             request.setAttribute("error", error);
-            request.getRequestDispatcher("welcome").forward(request, response);
+            request.setAttribute("startDate", dateFrom);
+            request.setAttribute("endDate", dateTo);
+            request.setAttribute("reason", reason);
+            request.getRequestDispatcher("/welcome.jsp").forward(request, response); // Ensure correct JSP path
             return;
         }
 
@@ -127,7 +130,7 @@ public class RequestController extends HttpServlet {
                 request.setAttribute("startDate", dateFrom);
                 request.setAttribute("endDate", dateTo);
                 request.setAttribute("reason", reason);
-                request.getRequestDispatcher("welcome").forward(request, response);
+                request.getRequestDispatcher("/welcome.jsp").forward(request, response);
                 return;
             }
 
@@ -148,7 +151,8 @@ public class RequestController extends HttpServlet {
             request.setAttribute("error", error);
         }
 
-        request.getRequestDispatcher("welcome").forward(request, response);
+        // Always forward to welcome.jsp after processing
+        request.getRequestDispatcher("/welcome.jsp").forward(request, response);
 
     }
 

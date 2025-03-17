@@ -11,37 +11,45 @@
     <body>
         <div class="header-bar">Leave System</div>
         <div class="navbar">
-            <a href="createForm.jsp">Create Leave Request</a>
-            <a href="view.jsp">View Requests</a>
+            <a href="createForm.jsp" class="active">Create Leave Request</a>
+            <a href="viewep.jsp">View Requests</a>
         </div>
         <div class="content">
-            <h3>Leave Request Form</h3>
-            <form action="req" method="POST">
-                <p><strong>User:</strong> Mr. Tèo, <strong>Role:</strong> Employee, <strong>Department:</strong> IT</p>
-                <label>From:</label>
-                <input type="date" name="startDate" style="width: 100%;" value="${requestScope.startDate}">
-                <br><br>
-                <label>To:</label>
-                <input type="date" name="endDate" style="width: 100%;" value="${requestScope.endDate}">
-                <br><br>
-                <label>Reason:</label>
-                <br>
-                <textarea id="reason" name="reason" rows="3" style="width: 100%;">${requestScope.reason}</textarea>
-                <br><br>
-                <button class="submit-btn">Submit</button>
-            </form>
+            <div class="form-container">
+                <h3>Leave Request Form</h3>
+                <form action="req" method="POST" class="leave-form">
+                    <p class="user-info">
+                        <strong>User:</strong> Mr. Tèo, 
+                        <strong>Role:</strong> Employee, 
+                        <strong>Department:</strong> IT
+                    </p>
+                    <div class="form-group">
+                        <label for="startDate">From:</label>
+                        <input type="date" id="startDate" name="startDate" value="${requestScope.startDate}">
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">To:</label>
+                        <input type="date" id="endDate" name="endDate" value="${requestScope.endDate}">
+                    </div>
+                    <div class="form-group">
+                        <label for="reason">Reason:</label>
+                        <textarea id="reason" name="reason" rows="3">${requestScope.reason}</textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Submit</button>
+                </form>
 
-            <c:if test="${not empty requestScope.error}">
-                <ul style="color: red;">
-                    <c:forEach var="err" items="${requestScope.error}">
-                        <li>${err}</li>
-                    </c:forEach>
-                </ul>
-            </c:if>
+                <c:if test="${not empty requestScope.error}">
+                    <ul class="error-message">
+                        <c:forEach var="err" items="${requestScope.error}">
+                            <li>${err}</li>
+                            </c:forEach>
+                    </ul>
+                </c:if>
 
-            <c:if test="${not empty requestScope.message}">
-                <p style="color: green;">${requestScope.message}</p>
-            </c:if>
+                <c:if test="${not empty requestScope.message}">
+                    <p class="success-message">${requestScope.message}</p>
+                </c:if>
+            </div>
         </div>
     </body>
 </html>

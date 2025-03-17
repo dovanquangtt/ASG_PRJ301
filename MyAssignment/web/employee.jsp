@@ -43,42 +43,13 @@
     <body>
         <div class="header-bar">Leave System</div>
         <div class="navbar">
-            <a href="#" onclick="toggleForm()">Create Leave Request</a>
-            <a href="#" onclick="toggleList()">View Requests</a>
+            <a href="createForm.jsp" onclick="toggleForm()">Create Leave Request</a>
+            <a href="createForm.jsp" onclick="toggleList()">View Requests</a>
         </div>
         <div class="content">
-            <div class="header">Welcome to the Leave Management System</div>
-            <p>Select a function from the menu above.</p>
+            <p>Welcome to the Leave Management System Select a function from the menu above.</p>
         </div>
-        <div id="leaveForm" class="form-container" style="display: none;">
-            <h3>Leave Request Form</h3>
-            <form action="req" method="POST">
-                <p><strong>User:</strong> Mr. Tèo, <strong>Role:</strong> Employee, <strong>Department:</strong> IT</p>
-                <label>From:</label>
-                <input type="date" name="startDate" style="width: 100%;" value="${requestScope.startDate}">
-                <br><br>
-                <label>To:</label>
-                <input type="date" name="endDate" style="width: 100%;" value="${requestScope.endDate}">
-                <br><br>
-                <label>Reason:</label>
-                <br>
-                <textarea id="reason" name="reason" rows="3" style="width: 100%;">${requestScope.reason}</textarea>
-                <br><br>
-                <button class="submit-btn">Submit</button>
-            </form>
 
-            <c:if test="${not empty requestScope.error}">
-                <ul style="color: red;">
-                    <c:forEach var="err" items="${requestScope.error}">
-                        <li>${err}</li>
-                        </c:forEach>
-                </ul>
-            </c:if>
-
-            <c:if test="${not empty requestScope.message}">
-                <p style="color: green;">${requestScope.message}</p>
-            </c:if>
-        </div>
         <div id="leaveList" class="list-container">
             <table>
                 <tr>

@@ -15,7 +15,6 @@
             <a href="viewep.jsp">View Requests</a>
         </div>
         <div class="content">
-            <h3>List of Leave Requests</h3>
             <table>
                 <tr>
                     <th>Title</th>

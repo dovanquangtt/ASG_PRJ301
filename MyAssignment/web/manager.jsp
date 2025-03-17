@@ -3,7 +3,7 @@
     Created on : Mar 12, 2025, 11:13:44 PM
     Author     : admin
 --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="vi">
@@ -58,7 +58,7 @@
         </div>
         <div id="leaveForm" class="form-container">
             <h3>Leave Request Form</h3>
-            <form action="rep" method="POST">
+            <form action="req" method="POST">
                 <p><strong>User:</strong> Mr. Tèo, <strong>Role:</strong> Employee, <strong>Department:</strong> IT</p>
                 <label>From:</label>
                 <input type="date" name="startDate" style="width: 100%;">
@@ -68,10 +68,20 @@
                 <br><br>
                 <label>Reason:</label>
                 <br>
-                <textarea name="reason" rows="3" style="width: 100%;"></textarea>
+                <textarea name="reason" value="${reason}" rows="3" style="width: 100%;"></textarea>
                 <br><br>
                 <button class="submit-btn">Submit</button>
             </form>
+            <c:if test="${not empty error}">
+                <div style="color: red; margin-bottom: 10px;">
+                    <ul>
+                        <c:forEach var="error" items="${error}">
+                            <li>${error}</li>
+                        </c:forEach>
+                    </ul>
+                </div>
+            </c:if>
+            ${message}
         </div>
         <div id="leaveList" class="list-container">
             <table>

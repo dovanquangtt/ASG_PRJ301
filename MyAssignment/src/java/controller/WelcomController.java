@@ -37,7 +37,7 @@ public class WelcomController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet WelcomController</title>");            
+            out.println("<title>Servlet WelcomController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet WelcomController at " + request.getContextPath() + "</h1>");
@@ -66,10 +66,14 @@ public class WelcomController extends HttpServlet {
             switch (acc.getRoleId()) {
                 case 1:
                     request.getRequestDispatcher("admin.jsp").forward(request, response);
+                    break;
+
                 case 2:
                     request.getRequestDispatcher("manager.jsp").forward(request, response);
+                    break;
                 case 3:
                     request.getRequestDispatcher("employee.jsp").forward(request, response);
+                    break;
             }
         }
     }

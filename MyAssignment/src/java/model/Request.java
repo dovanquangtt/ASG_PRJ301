@@ -12,6 +12,7 @@ import java.sql.*;
  */
 public class Request {
 
+    private Integer id;
     private int employeeId;
     private Date dateTo;
     private Date DateFrom;
@@ -22,13 +23,22 @@ public class Request {
     public Request() {
     }
 
-    public Request(int employeeId, Date dateTo, Date DateFrom, Date dateCreate, String reason, String Status) {
+    public Request(Integer id, int employeeId, Date dateTo, Date DateFrom, Date dateCreate, String reason, String Status) {
+        this.id = id;
         this.employeeId = employeeId;
         this.dateTo = dateTo;
         this.DateFrom = DateFrom;
         this.dateCreate = dateCreate;
         this.reason = reason;
         this.Status = Status;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public int getEmployeeId() {
@@ -79,4 +89,6 @@ public class Request {
         this.Status = Status;
     }
 
+   
+   
 }

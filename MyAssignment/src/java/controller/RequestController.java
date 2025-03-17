@@ -12,12 +12,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import model.Account;
-import java.sql.*;
-import java.sql.Date;
 import model.Account;
 import model.Request;
 
@@ -80,76 +78,83 @@ public class RequestController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Account account = (Account) session.getAttribute("account");
+        Account acc = (Account) session.getAttribute("account");
 
-        if (account == null) {
+        // Nếu chưa đăng nhập, chuyển hướng về trang login
+        if (acc == null) {
             response.sendRedirect("login.jsp");
             return;
         }
 
-        // Lấy vai trò của người dùng từ session để xác định trang đích phù hợp
-        String role = (String) session.getAttribute("role");
-        String targetPage;
-
-        if ("employee".equals(role)) {
-            targetPage = "employee.jsp";
-        } else if ("manager".equals(role)) {
-            targetPage = "manager.jsp";
-        } else {
-            targetPage = "login.jsp";
-        }
-
+        // Lấy dữ liệu từ form
         String dateFrom = request.getParameter("startDate");
         String dateTo = request.getParameter("endDate");
         String reason = request.getParameter("reason");
 
+        // Danh sách lỗi
         List<String> errors = new ArrayList<>();
-        if (dateFrom == null || dateTo == null || reason == null || reason.trim().isEmpty()) {
-            errors.add("Dữ liệu không hợp lệ, vui lòng nhập lại.");
+
+        // Kiểm tra dữ liệu đầu vào rỗng
+        if (dateFrom == null || dateTo == null || dateFrom.isEmpty() || dateTo.isEmpty() || reason.trim().isEmpty()) {
+            errors.add("Vui lòng điền đầy đủ thông tin.");
         }
 
-        try {
-            Date from = Date.valueOf(dateFrom);
-            Date to = Date.valueOf(dateTo);
-            Date now = Date.valueOf(LocalDate.now());
+        Date from = null;
+        Date to = null;
+        Date now = Date.valueOf(LocalDate.now());
 
-            if (from.after(to)) {
-                errors.add("Ngày bắt đầu không thể sau ngày kết thúc.");
-            }
-            if (to.before(now)) {
-                errors.add("Ngày kết thúc không thể là quá khứ.");
-            }
-            if (from.before(now)) {
-                errors.add("Ngày bắt đầu không thể là quá khứ.");
-            }
+        // Chỉ xử lý logic ngày nếu không có lỗi input rỗng
+        if (errors.isEmpty()) {
+            try {
+                from = Date.valueOf(dateFrom);
+                to = Date.valueOf(dateTo);
 
-            // Nếu không có lỗi, tiến hành thêm yêu cầu vào cơ sở dữ liệu
-            if (errors.isEmpty()) {
-                RequestDAO requestDAO = new RequestDAO();
-                Request requestObj = new Request(
-                        account.getEmployeeId(),
-                        to, from, now,
-                        reason,
-                        "Pending"
-                );
-
-                // Thực hiện thêm yêu cầu vào cơ sở dữ liệu và kiểm tra kết quả
-                boolean success = requestDAO.insertRequest(requestObj);
-                if (success) {
-                    request.setAttribute("message", "Gửi đơn thành công!");
-                } else {
-                    request.setAttribute("message", "Gửi đơn thất bại!");
+                // Kiểm tra logic ngày
+                if (from.after(to)) {
+                    errors.add("Ngày bắt đầu không thể sau ngày kết thúc.");
                 }
-            } else {
-                request.setAttribute("error", errors);
+                if (from.equals(to)) {
+                    errors.add("Ngày bắt đầu và ngày kết thúc không thể giống nhau.");
+                }
+                if (from.before(now)) {
+                    errors.add("Ngày bắt đầu không thể là quá khứ.");
+                }
+                if (to.before(now)) {
+                    errors.add("Ngày kết thúc không thể là quá khứ.");
+                }
+
+            } catch (IllegalArgumentException e) {
+                errors.add("Định dạng ngày không hợp lệ.");
             }
-        } catch (IllegalArgumentException e) {
-            errors.add("Định dạng ngày không hợp lệ.");
-            request.setAttribute("error", errors);
+        }
+
+        // Nếu không có lỗi, tiến hành insert vào database
+        if (errors.isEmpty()) {
+            RequestDAO requestDAO = new RequestDAO();
+            Request requestObj = new Request(0, acc.getEmployeeId(), to, from, now, reason, "Pending");
+
+            try {
+                // Gửi đơn
+                requestDAO.insertRequest(requestObj);
+
+                // Nếu không có lỗi, hiển thị thông báo thành công
+                request.setAttribute("message", "Gửi đơn thành công!");
+            } catch (Exception e) {
+                // Nếu lỗi hệ thống, thêm vào danh sách lỗi
+                errors.add("Gửi đơn thất bại do lỗi hệ thống.");
+                e.printStackTrace(); // In lỗi ra console để debug (nếu cần)
+            }
+        }
+
+        // Gửi danh sách lỗi hoặc thông báo thành công về JSP
+        request.setAttribute("error", errors);
+        // Phân quyền chuyển hướng: Employee hoặc Manager
+        String targetPage = acc.getRoleId() == 3 ? "employee.jsp" : "manager.jsp";
+        if (acc.getRoleId() != 3 && acc.getRoleId() != 2) {
+            targetPage = "error.jsp"; // Nếu role không hợp lệ
         }
 
         request.getRequestDispatcher(targetPage).forward(request, response);
-
     }
 
     /**

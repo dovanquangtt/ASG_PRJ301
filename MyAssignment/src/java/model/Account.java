@@ -15,16 +15,18 @@ public class Account {
     private String password;
     private int EmployeeId;
     private int roleId;
+    private String RoleName;
 
     public Account() {
     }
 
-    public Account(int id, String username, String password, int EmployeeId, int roleId) {
+    public Account(int id, String username, String password, int EmployeeId, int roleId, String RoleName) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.EmployeeId = EmployeeId;
         this.roleId = roleId;
+        this.RoleName = RoleName;
     }
 
     public int getId() {
@@ -67,4 +69,13 @@ public class Account {
         this.roleId = roleId;
     }
 
+    public String getRoleName() {
+        return RoleName;
+    }
+
+    public void setRoleName(String RoleName) {
+        this.RoleName = RoleName;
+    }
+
+    
  }

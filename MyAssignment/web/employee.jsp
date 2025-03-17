@@ -1,9 +1,12 @@
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>H? th?ng ngh? phép</title>
+        <title>H? th?ng ngh? phÃ©p</title>
         <<link rel="stylesheet" href="style.css"/>
         <script>
             function toggleForm() {
@@ -50,28 +53,33 @@
         <div id="leaveForm" class="form-container">
             <h3>Leave Request Form</h3>
             <form action="req" method="POST">
-                <p><strong>User:</strong> Mr. Tèo, <strong>Role:</strong> Employee, <strong>Department:</strong> IT</p>
+                <p><strong>User:</strong> Mr. TÃ¨o, <strong>Role:</strong> Employee, <strong>Department:</strong> IT</p>
                 <label>From:</label>
-                <input type="date" name="startDate" style="width: 100%;">
+                <input type="date" name="startDate" style="width: 100%;" value="${param.startDate}">
                 <br><br>
                 <label>To:</label>
-                <input type="date" name="endDate" style="width: 100%;">
+                <input type="date" name="endDate" style="width: 100%;" value="${param.endDate}">
                 <br><br>
                 <label>Reason:</label>
                 <br>
-                <textarea id="reason" rows="3" style="width: 100%;"></textarea>
+                <textarea id="reason" name="reason" rows="3" style="width: 100%;">${param.reason}</textarea>
+
                 <br><br>
                 <button class="submit-btn">Submit</button>
             </form>
             <c:if test="${not empty error}">
-                <div style="color: red; margin-bottom: 10px;">
-                    <ul>
-                        <c:forEach var="error" items="${error}">
-                            <li>${error}</li>
+                <ul style="color: red;">
+                    <c:forEach var="err" items="${error}">
+                        <li>${err}</li>
                         </c:forEach>
-                    </ul>
-                </div>
+                </ul>
             </c:if>
+
+            <c:if test="${not empty message}">
+                <p style="color: green;">${message}</p>
+            </c:if>
+
+
         </div>
         <div id="leaveList" class="list-container">
             <table>

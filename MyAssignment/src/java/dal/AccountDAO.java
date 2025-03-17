@@ -96,33 +96,4 @@ public class AccountDAO extends DBContext {
         }
     }
 
-    public void updateAccount(Account account) {
-        String sql = "UPDATE [dbo].[Account]\n"
-                + "   SET [Username] = ?\n"
-                + "      ,[Password] = ?\n"
-                + " WHERE  [Id] = ?";
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, account.getUsername());
-            ps.setString(2, account.getPassword());
-            ps.setInt(3, account.getRoleId());
-            ps.setInt(4, account.getId());
-            ps.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();;
-        }
-    }
-
-    public void deleteAccount(int id) {
-        String sql = "DELETE FROM [dbo].[Account]\n"
-                + "      WHERE [Id] = ?";
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, id);
-            ps.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();;
-        }
-    }
-
 }

@@ -134,20 +134,24 @@ public class RequestController extends HttpServlet {
             Request requestObj = new Request(0, acc.getEmployeeId(), to, from, now, reason, "Pending");
 
             try {
-                // Gửi đơn
-                requestDAO.insertRequest(requestObj);
-
-                // Nếu không có lỗi, hiển thị thông báo thành công
-                request.setAttribute("message", "Gửi đơn thành công!");
+                // Gửi đơn và kiểm tra kết quả
+                boolean isInserted = requestDAO.insertRequest(requestObj); // Giả sử phương thức trả về boolean
+                if (isInserted) {
+                    request.setAttribute("message", "Gửi đơn thành công!");
+                } else {
+                    errors.add("Gửi đơn thất bại do lỗi hệ thống.");
+                }
             } catch (Exception e) {
-                // Nếu lỗi hệ thống, thêm vào danh sách lỗi
-                errors.add("Gửi đơn thất bại do lỗi hệ thống.");
-                e.printStackTrace(); // In lỗi ra console để debug (nếu cần)
+                errors.add("Gửi đơn thất bại do lỗi hệ thống: " + e.getMessage());
+                e.printStackTrace(); // In lỗi ra console để debug
             }
         }
 
-        // Gửi danh sách lỗi hoặc thông báo thành công về JSP
-        request.setAttribute("error", errors);
+        // Gửi danh sách lỗi về JSP (nếu có)
+        if (!errors.isEmpty()) {
+            request.setAttribute("error", errors);
+        }
+
         // Phân quyền chuyển hướng: Employee hoặc Manager
         String targetPage = acc.getRoleId() == 3 ? "employee.jsp" : "manager.jsp";
         if (acc.getRoleId() != 3 && acc.getRoleId() != 2) {

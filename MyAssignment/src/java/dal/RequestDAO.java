@@ -66,20 +66,32 @@ public class RequestDAO extends DBContext {
         return list;
     }
 
-    public void insertRequest(Request request) {
-        String sql = "INSERT INTO Request (EmployeeId, DateTo, DateFrom, DateCreate, Reason, Status) VALUES (?, ?, ?, ?, ?, ?)";
+    public int insert(Request request) {
+        int result = -1;
+        String sql = "INSERT INTO [dbo].[Request]\n"
+                + "           ([EmployeeId]\n"
+                + "           ,[DateTo]\n"
+                + "           ,[DateFrom]\n"
+                + "           ,[DateCreate]\n"
+                + "           ,[Reason]\n"
+                + "           ,[Status])\n"
+                + "     VALUES\n"
+                + "           (?,?,?,?,?,?)";
+        // Sử dụng try-with-resources để tự động đóng PreparedStatement
         try {
-            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, request.getEmployeeId());
-            ps.setDate(2, request.getDateTo());
-            ps.setDate(3, request.getDateFrom());
-            ps.setDate(4, request.getDateCreate());
-            ps.setString(5, request.getReason());
-            ps.setString(6, request.getStatus());
-            ps.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, request.getEmployeeId());
+            st.setDate(2, request.getDateTo());
+            st.setDate(3, request.getDateFrom());
+            st.setDate(4, request.getDateCreate());
+            st.setString(5, request.getReason()); // Nếu đổi tên thuộc tính, thì đây thành getReason()
+            st.setString(6, request.getStatus());
+            result = st.executeUpdate();
+        } catch (SQLException ex) {
+            // Log lỗi để tiện debug
+            ex.printStackTrace();
         }
+        return result;
     }
 
     public boolean updateSatatusRequest(int employeeId, String status) {
@@ -117,26 +129,6 @@ public class RequestDAO extends DBContext {
             e.printStackTrace();
         }
         return list;
-    }
-
-    public static void main(String[] args) {
-        RequestDAO dao = new RequestDAO();
-
-        // Dữ liệu giả để test
-        int employeeId = 2;
-        Date from = Date.valueOf("2025-03-17");
-        Date to = Date.valueOf("2025-03-17");
-        Date createDate = Date.valueOf(LocalDate.now());
-        String reason = "abc";
-        String status = "Pending";
-
-        // Tạo một Request object
-        Request request = new Request(0, employeeId, to, from, createDate, reason, status);
-
-        // Gọi hàm insertRequest
-        dao.insertRequest(request);
-
-        System.out.println("Insert thành công!");
     }
 
 }

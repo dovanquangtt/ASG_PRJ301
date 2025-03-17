@@ -6,6 +6,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Created on : Mar 6, 2025, 11:00:54 PM
     Author     : admin
 */
+
+/* ===== RESET CSS ===== */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -14,6 +16,11 @@ body {
     color: white;
 }
 
+a {
+    text-decoration: none;
+}
+
+/* ===== HEADER BAR ===== */
 .header-bar {
     background: #d84315;
     color: white;
@@ -23,6 +30,7 @@ body {
     font-weight: bold;
 }
 
+/* ===== NAVBAR ===== */
 .navbar {
     background: #bf360c;
     padding: 10px;
@@ -33,11 +41,9 @@ body {
 
 .navbar a {
     color: white;
-    text-decoration: none;
     padding: 10px 15px;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 5px;
-    cursor: pointer;
 }
 
 .navbar a:hover {
@@ -49,22 +55,20 @@ body {
     font-weight: bold;
 }
 
+/* ===== CONTENT ===== */
 .content {
     padding: 20px;
-    text-align: center;
-    min-height: calc(100vh - 120px); /* Adjust based on header and navbar height */
+    min-height: calc(100vh - 120px);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+/* ===== FORM CONTAINER ===== */
 .form-container {
-    display: block; /* Ensure the form is visible by default */
     margin-top: 20px;
     padding: 20px;
-    width: 400px; /* Already set, keeping it */
-    margin-left: auto;
-    margin-right: auto;
+    width: 400px;
     background: #1c1c1c;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
@@ -79,7 +83,7 @@ body {
 .user-info {
     margin-bottom: 20px;
     font-size: 16px;
-    color: #ffccbc; /* Light peach color to match the theme */
+    color: #ffccbc;
 }
 
 .leave-form {
@@ -107,7 +111,6 @@ body {
     font-size: 14px;
     background: #fff;
     color: #333;
-    width: 100%; /* Ensure full width within the container */
 }
 
 .form-group input[type="date"]:focus,
@@ -117,9 +120,10 @@ body {
 }
 
 .form-group textarea {
-    resize: vertical; /* Allow vertical resizing only */
+    resize: vertical;
 }
 
+/* ===== BUTTON ===== */
 .submit-btn {
     padding: 10px;
     border: none;
@@ -135,6 +139,26 @@ body {
     background: #e64a19;
 }
 
+.action-btn {
+    padding: 8px 12px;
+    margin: 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.update-btn {
+    background: #ff9800;
+    color: white;
+}
+
+.delete-btn {
+    background: #d32f2f;
+    color: white;
+}
+
+/* ===== ERROR & SUCCESS MESSAGE ===== */
 .error-message {
     list-style: none;
     background: #d32f2f;
@@ -157,8 +181,8 @@ body {
     text-align: center;
 }
 
+/* ===== TABLE ===== */
 .list-container {
-    display: none;
     margin-top: 20px;
     width: 80%;
     margin-left: auto;
@@ -188,26 +212,7 @@ th {
     color: white;
 }
 
-.action-btn {
-    padding: 8px 12px;
-    margin: 2px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.update-btn {
-    background: #ff9800;
-    color: white;
-}
-
-.delete-btn {
-    background: #d32f2f;
-    color: white;
-}
-
-/* Responsive design */
+/* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 600px) {
     .form-container {
         width: 90%;
@@ -224,4 +229,31 @@ th {
         width: 100%;
         text-align: center;
     }
+}
+
+/* ===== CUSTOM CSS CHO TRANG LABOR STATUS ===== */
+.labor-status-table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: #1e1e1e;
+}
+
+.labor-status-table th, .labor-status-table td {
+    padding: 10px;
+    text-align: center;
+    color: white;
+    border: 1px solid #444;
+}
+
+.labor-status-table th {
+    background: #d84315;
+}
+
+.labor-status-table td.present {
+    background: #4caf50; /* Màu xanh lá cho ngày làm việc */
+}
+
+.labor-status-table td.absent {
+    background: #d32f2f; /* Màu đỏ cho ngày nghỉ */
 }

@@ -52,7 +52,7 @@
             <%    
                 } else if (action.equals("approve")) {
             %>
-            <jsp:include page="approve.jsp" />
+            <jsp:include page="approveMg.jsp" />
             <%    
                 } else if (action.equals("labor")) {
             %>

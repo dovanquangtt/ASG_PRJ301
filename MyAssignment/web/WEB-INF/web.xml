@@ -12,6 +12,10 @@
         <servlet-name>RequestController</servlet-name>
         <servlet-class>controller.RequestController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewepController</servlet-name>
+        <servlet-class>controller.ViewepController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -23,5 +27,9 @@
     <servlet-mapping>
         <servlet-name>RequestController</servlet-name>
         <url-pattern>/req</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewepController</servlet-name>
+        <url-pattern>/viewep</url-pattern>
     </servlet-mapping>
 </web-app>

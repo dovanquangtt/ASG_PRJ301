@@ -89,6 +89,11 @@ public class Request {
         this.Status = Status;
     }
 
+    @Override
+    public String toString() {
+        return "Request{" + "id=" + id + ", employeeId=" + employeeId + ", dateTo=" + dateTo + ", DateFrom=" + DateFrom + ", dateCreate=" + dateCreate + ", reason=" + reason + ", Status=" + Status + '}';
+    }
+
    
    
 }

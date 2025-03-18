@@ -102,19 +102,19 @@ public class RequestDAO extends DBContext {
 
     public List<Request> getRequestByEmployeeId(int employeeId) {
         List<Request> list = new ArrayList<>();
-        String sql = "select r.DateCreate,r.DateFrom,r.DateTo,r.Reason,r.Status from Request r where r.EmployeeId= ?";
+        String sql = "select r.Id, r.DateCreate,r.DateFrom,r.DateTo,r.Reason,r.Status from Request r where r.EmployeeId= ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, employeeId);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Request requests = new Request();
-                requests.setDateCreate(rs.getDate(1));
-                requests.setDateFrom(rs.getDate(2));
-                requests.setDateTo(rs.getDate(3));
-                requests.setReason(rs.getString(4));
-                requests.setStatus(rs.getString(5));
-                requests.setEmployeeId(employeeId);  // gán employeeId vào đối tượng request
+                requests.setId(rs.getInt(1));
+                requests.setDateCreate(rs.getDate(2));
+                requests.setDateFrom(rs.getDate(3));
+                requests.setDateTo(rs.getDate(4));
+                requests.setReason(rs.getString(5));
+                requests.setStatus(rs.getString(6));
                 list.add(requests);
             }
         } catch (Exception e) {
@@ -125,31 +125,9 @@ public class RequestDAO extends DBContext {
 
     public static void main(String[] args) {
         RequestDAO requestDAO = new RequestDAO();
-
-        // Dữ liệu giả để test
-        int employeeId = 2;  // Giả sử EmployeeId là 2
-        Date fromDate = Date.valueOf("2025-03-17");
-        Date toDate = Date.valueOf("2025-03-20");
-        Date createDate = Date.valueOf(LocalDate.now());
-        String reason = "Take a vacation";
-        String status = "Pending";
-
-        // Tạo object Request
-        Request request = new Request();
-        request.setEmployeeId(employeeId);
-        request.setDateFrom(fromDate);
-        request.setDateTo(toDate);
-        request.setDateCreate(createDate);
-        request.setReason(reason);
-        request.setStatus(status);
-
-        // Gọi hàm insert
-        int result = requestDAO.insert(request);
-
-        if (result > 0) {
-            System.out.println("Insert thành công!");
-        } else {
-            System.out.println("Insert thất bại!");
+        List<Request> list = requestDAO.getRequestByEmployeeId(2);
+        for (Request request : list) {
+            System.out.println(request.toString());
         }
     }
 

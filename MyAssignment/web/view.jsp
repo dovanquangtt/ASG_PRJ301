@@ -12,7 +12,7 @@
         <div class="header-bar">Leave System</div>
         <div class="navbar">
             <a href="createForm.jsp">Create Leave Request</a>
-            <a href="viewep.jsp">View Requests</a>
+            <a href="view.jsp">View Requests</a>
         </div>
         <div class="content">
             <table>

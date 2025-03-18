@@ -11,13 +11,43 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Hệ thống nghỉ phép</title>
-        <link rel="stylesheet" href="css/style.css"/>
+        <link rel="stylesheet" href="style.css"/>
     </head>
     <body>
         <div class="header-bar">Leave System</div>
         <div class="navbar">
-            <a href="formManager.jsp">Create Leave Request</a>
-            <a href="leaveRequests.jsp">View Requests</a>
-            <a href="approveRequests.jsp">Approve Requests</a>
-            <a href="laborStatus.jsp">Labor Status</a>
+            <a href="manager.jsp?action=create">Create Leave Request</a>
+            <a href="manager.jsp?action=view">View Requests</a>
+            <a href="manager.jsp?action=approve">Approve Requests</a>
+            <a href="manager.jsp?action=labor">Labor Status</a>
         </div>
+        <div class="content">
+            <div class="header">Welcome to the Leave Management System</div>
+            <p>Select a function from the menu above.</p>
+            <%
+                String action = request.getParameter("action");
+                if (action == null || action.isEmpty()) {
+            %>
+            <p>Select a function from the menu above.</p>
+            <%    
+                } else if (action.equals("create")) {
+            %>
+            <jsp:include page="create.jsp" />
+            <%    
+                } else if (action.equals("view")) {
+            %>
+            <jsp:include page="viewmanager.jsp" />
+            <%    
+                } else if (action.equals("approve")) {
+            %>
+            <jsp:include page="approve.jsp" />
+            <%    
+                } else if (action.equals("labor")) {
+            %>
+            <jsp:include page="labor.jsp" />
+            <%    
+                }
+            %>
+        </div>
+    </body>
+</html>

@@ -12,6 +12,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Hệ thống nghỉ phép</title>
         <link rel="stylesheet" href="style.css"/>
+        <style>
+            /* Additional CSS to center the content */
+            .content {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: calc(100vh - 100px); /* Adjust to account for header and navbar */
+            }
+            .form-container {
+                margin: 0 auto;
+                width: 400px; /* Ensure consistent width */
+            }
+        </style>
     </head>
     <body>
         <div class="header-bar">Leave System</div>
@@ -22,21 +35,20 @@
             <a href="manager.jsp?action=labor">Labor Status</a>
         </div>
         <div class="content">
-            <div class="header">Welcome to the Leave Management System</div>
-            <p>Select a function from the menu above.</p>
             <%
                 String action = request.getParameter("action");
                 if (action == null || action.isEmpty()) {
             %>
+            <div class="header">Welcome to the Leave Management System</div>
             <p>Select a function from the menu above.</p>
             <%    
                 } else if (action.equals("create")) {
             %>
-            <jsp:include page="create.jsp" />
+            <jsp:include page="createMg.jsp" />
             <%    
                 } else if (action.equals("view")) {
             %>
-            <jsp:include page="viewmanager.jsp" />
+            <jsp:include page="viewMg.jsp" />
             <%    
                 } else if (action.equals("approve")) {
             %>

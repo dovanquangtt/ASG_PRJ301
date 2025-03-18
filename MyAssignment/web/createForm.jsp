@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Create Leave Request</title>
+        <title>Create/Update Leave Request</title>
         <link rel="stylesheet" href="style.css"/>
     </head>
     <body>
@@ -17,21 +17,43 @@
         <div class="content">
             <div class="form-container">
                 <h3>Leave Request Form</h3>
-                <form action="req" method="POST" class="leave-form">
-                    <div class="form-group">
-                        <label for="startDate">From:</label>
-                        <input type="date" id="startDate" name="startDate" required">
-                    </div>
-                    <div class="form-group">
-                        <label for="endDate">To:</label>
-                        <input type="date" id="endDate" name="endDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="reason">Reason:</label>
-                        <textarea id="reason" name="reason" required></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">Submit</button>
-                </form>
+                <!-- Nếu là cập nhật thì thêm hidden field chứa id -->
+                <c:if test="${not empty requestData}">
+                    <form action="req" method="POST" class="leave-form">
+                        <input type="hidden" name="id" value="${requestData.id}" />
+                        <div class="form-group">
+                            <label for="startDate">From:</label>
+                            <input type="date" id="startDate" name="startDate" value="${requestData.dateFrom}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate">To:</label>
+                            <input type="date" id="endDate" name="endDate" value="${requestData.dateTo}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reason">Reason:</label>
+                            <textarea id="reason" name="reason" required>${requestData.reason}</textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Submit</button>
+                    </form>
+                </c:if>
+                <!-- Nếu là tạo mới -->
+                <c:if test="${empty requestData}">
+                    <form action="req" method="POST" class="leave-form">
+                        <div class="form-group">
+                            <label for="startDate">From:</label>
+                            <input type="date" id="startDate" name="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate">To:</label>
+                            <input type="date" id="endDate" name="endDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reason">Reason:</label>
+                            <textarea id="reason" name="reason" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Submit</button>
+                    </form>
+                </c:if>
 
                 <c:if test="${not empty error}">
                     <div class="error-list">

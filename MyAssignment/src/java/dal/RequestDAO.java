@@ -124,6 +124,20 @@ public class RequestDAO extends DBContext {
         return list;
     }
 
+    public int DeleteRequest(int id) {
+        int Result = -1;
+        String sql = "DELETE FROM [dbo].[Request]\n"
+                + "      WHERE Id = ? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            Result = st.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result;
+    }
+
 //    public static void main(String[] args) {
 //        RequestDAO dao = new RequestDAO();
 //

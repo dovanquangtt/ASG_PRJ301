@@ -33,7 +33,7 @@
                         <td>${request.getStatus()}</td>
                         
                         <td>
-                            <button class="action-btn update-btn" onclick="location.href = 'updateRequest?id=${request.getId()}'">Update</button>
+                            <button class="action-btn update-btn" onclick="location.href = 'update?id=${request.getId()}'">Update</button>
                             <button class="action-btn delete-btn" onclick="location.href = 'deleteRequest?id=${request.getId()}'">Delete</button>
                         </td>
                     </tr>

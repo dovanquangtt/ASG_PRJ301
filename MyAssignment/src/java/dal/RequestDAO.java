@@ -44,26 +44,25 @@ public class RequestDAO extends DBContext {
         return requests;
     }
 
-    public List<Request> getRequestbyId(int Id) {
-        List<Request> list = new ArrayList<>();
-        String sql = "select r.Id,r.DateCreate,r.DateFrom,r.DateTo,r.Reason,r.Status from Request r where r.EmployeeId=?";
+    public Request getRequestbyId(int Id) {
+        Request r = null;
+        String sql = "select r.Id,r.DateCreate,r.DateFrom,r.DateTo,r.Reason,r.Status from Request r where r.Id=?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, Id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Request r = new Request();
+                r = new Request();
                 r.setId(rs.getInt("Id"));
-                r.setDateTo(rs.getDate("DateTo"));
-                r.setDateFrom(rs.getDate("DateFrom"));
                 r.setDateCreate(rs.getDate("DateCreate"));
+                r.setDateFrom(rs.getDate("DateFrom"));
+                r.setDateTo(rs.getDate("DateTo"));
                 r.setReason(rs.getString("Reason"));
                 r.setStatus(rs.getString("Status"));
-                list.add(r);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return list;
+        return r;
     }
 
     public int insert(Request request) {
@@ -86,18 +85,20 @@ public class RequestDAO extends DBContext {
         return result;
     }
 
-    public boolean updateSatatusRequest(int employeeId, String status) {
-        String sql = "update Request SET  Status = ? where  EmployeeId = ? ";
+    public int updateSatatusRequest(Request request) {
+        int result = -1;
+        String sql = "update Request SET DateFrom = ? , DateTo = ?, Reason = ? where  Id = ? ";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, status);
-            ps.setInt(2, employeeId);
-            int rowUpdate = ps.executeUpdate();
-            return rowUpdate > 0;
+            ps.setDate(1, request.getDateFrom());
+            ps.setDate(2, request.getDateTo());
+            ps.setString(3, request.getReason());
+            ps.setInt(4, request.getId());
+            result = ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return result;
     }
 
     public List<Request> getRequestByEmployeeId(int employeeId) {
@@ -123,11 +124,37 @@ public class RequestDAO extends DBContext {
         return list;
     }
 
+//    public static void main(String[] args) {
+//        RequestDAO dao = new RequestDAO();
+//
+//        // Giả sử bạn muốn test với Id = 1
+//        int testId = 52;
+//        Request result = dao.getRequestbyId(testId);
+//
+//        if (result != null) {
+//            System.out.println("Đã tìm thấy request với Id = " + testId);
+//            System.out.println("Chi tiết request: " + result.toString());
+//        } else {
+//            System.out.println("Không tìm thấy request với Id = " + testId);
+//        }
+//    }
     public static void main(String[] args) {
-        RequestDAO requestDAO = new RequestDAO();
-        List<Request> list = requestDAO.getRequestByEmployeeId(2);
-        for (Request request : list) {
-            System.out.println(request.toString());
+        // Bước 1: Chuẩn bị đối tượng Request
+        Request request = new Request();
+        request.setId(1); // Thay bằng ID hợp lệ trong cơ sở dữ liệu của bạn
+        request.setDateFrom(Date.valueOf("2023-10-01")); // Ngày bắt đầu
+        request.setDateTo(Date.valueOf("2023-10-05")); // Ngày kết thúc
+        request.setReason("Cập nhật lý do mới"); // Lý do mới
+
+        // Bước 2: Tạo đối tượng RequestDAO và gọi hàm updateSatatusRequest
+        RequestDAO dao = new RequestDAO();
+        int result = dao.updateSatatusRequest(request);
+
+        // Bước 3: Kiểm tra kết quả
+        if (result == -1) {
+            System.out.println("Cập nhật không thành công hoặc có lỗi xảy ra.");
+        } else {
+            System.out.println("Cập nhật thành công. Số hàng ảnh hưởng: " + result);
         }
     }
 

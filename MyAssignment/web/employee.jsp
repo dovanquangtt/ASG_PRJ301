@@ -44,7 +44,7 @@
         <div class="header-bar">Leave System</div>
         <div class="navbar">
             <a href="createForm.jsp" onclick="toggleForm()">Create Leave Request</a>
-            <a href="createForm.jsp" onclick="toggleList()">View Requests</a>
+            <a href="http://localhost:9999/MyAssignment/viewep" onclick="toggleList()">View Requests</a>
         </div>
         <div class="content">
             <p>Welcome to the Leave Management System Select a function from the menu above.</p>

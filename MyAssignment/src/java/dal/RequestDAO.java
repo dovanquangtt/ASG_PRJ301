@@ -44,7 +44,7 @@ public class RequestDAO extends DBContext {
         return requests;
     }
 
-    public List<Request> getReuestbyId(int Id) {
+    public List<Request> getRequestbyId(int Id) {
         List<Request> list = new ArrayList<>();
         String sql = "select r.Id,r.DateCreate,r.DateFrom,r.DateTo,r.Reason,r.Status from Request r where r.EmployeeId=?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {

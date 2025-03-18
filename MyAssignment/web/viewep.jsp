@@ -12,43 +12,35 @@
         <div class="header-bar">Leave System</div>
         <div class="navbar">
             <a href="createForm.jsp">Create Leave Request</a>
-            <a href="viewep.jsp">View Requests</a>
+            <a href="http://localhost:9999/MyAssignment/viewep">View Requests</a>
         </div>
         <div class="content">
             <table>
                 <tr>
-                    <th>Title</th>
+                    <th>Reason</th>
                     <th>From</th>
                     <th>To</th>
-                    <th>Created By</th>
+                    <th>DateCreate</th>
                     <th>Status</th>
-                    <th>Processed By</th>
                     <th>Action</th>
                 </tr>
-                <tr>
-                    <td>Wedding Leave</td>
-                    <td>1/1/2025</td>
-                    <td>3/1/2025</td>
-                    <td>Mr F</td>
-                    <td>In Progress</td>
-                    <td>-</td>
-                    <td>
-                        <button class="action-btn update-btn">Update</button>
-                        <button class="action-btn delete-btn">Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Vacation Leave</td>
-                    <td>1/1/2025</td>
-                    <td>5/1/2025</td>
-                    <td>Mr E</td>
-                    <td>Rejected</td>
-                    <td>Mr B</td>
-                    <td>
-                        <button class="action-btn update-btn">Update</button>
-                        <button class="action-btn delete-btn">Delete</button>
-                    </td>
-                </tr>
+                <c:forEach items="${list}" var="request">
+                    <tr>
+                        <td>${request.getReason()}</td>
+                        <td>${request.getDateFrom()}</td>
+                        <td>${request.getDateTo()}</td>
+                        <td>${request.getDateCreate()}</td>
+                        <td>${request.getStatus()}</td>
+                        
+                        <td>
+                            <button class="action-btn update-btn" onclick="location.href = 'updateRequest?id=${request.getId()}'">Update</button>
+                            <button class="action-btn delete-btn" onclick="location.href = 'deleteRequest?id=${request.getId()}'">Delete</button>
+                        </td>
+                    </tr>
+                </c:forEach>
+                <c:if test="${empty list}">
+                    <tr><td colspan="6">Không tìm thấy đơn xin nghỉ phép nào.</td></tr>
+                </c:if>
             </table>
         </div>
     </body>

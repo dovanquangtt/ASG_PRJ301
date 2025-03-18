@@ -12,7 +12,7 @@
         <div class="header-bar">Leave System</div>
         <div class="navbar">
             <a href="createForm.jsp" class="active">Create Leave Request</a>
-            <a href="viewep.jsp">View Requests</a>
+            <a href="http://localhost:9999/MyAssignment/viewep">View Requests</a>
         </div>
         <div class="content">
             <div class="form-container">

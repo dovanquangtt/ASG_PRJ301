@@ -64,7 +64,7 @@ public class RequestController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      
+
     }
 
     /**
@@ -80,51 +80,83 @@ public class RequestController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("account");
+
         if (account == null) {
             response.sendRedirect("login");
-        }
-        String DateFrom = request.getParameter("startDate");
-        String DateTo = request.getParameter("endDate");
-        String Reason = request.getParameter("reason");
-        List<String> error = new ArrayList<>();
-        if (Reason == null || DateTo == null || DateFrom == null) {
-            error.add("Dữ liệu không hợp lệ, nhập lại.");
-            request.getRequestDispatcher("createForm.jsp").forward(request, response);
+            return;
         }
 
-        Date datefrom = Date.valueOf(DateFrom);
-        Date dateto = Date.valueOf(DateTo);
+        // Lấy dữ liệu từ form
+        String dateFromParam = request.getParameter("startDate");
+        String dateToParam = request.getParameter("endDate");
+        String reason = request.getParameter("reason");
+
+        List<String> error = new ArrayList<>();
+
+        // Kiểm tra rỗng
+        if (dateFromParam == null || dateFromParam.trim().isEmpty()
+                || dateToParam == null || dateToParam.trim().isEmpty()
+                || reason == null || reason.trim().isEmpty()) {
+            error.add("Vui lòng điền đầy đủ thông tin.");
+        }
+
+        // Khai báo biến Date
+        Date dateFrom = null;
+        Date dateTo = null;
         Date now = Date.valueOf(LocalDate.now());
 
-        if (datefrom.after(dateto)) {
-            error.add("Ngày bắt đầu nghỉ không thể sau ngày kết thúc nghỉ.");
-            
+        // Kiểm tra định dạng ngày
+        if (error.isEmpty()) {
+            try {
+                dateFrom = Date.valueOf(dateFromParam);
+            } catch (IllegalArgumentException e) {
+                error.add("Ngày bắt đầu nghỉ không hợp lệ. (Định dạng: yyyy-MM-dd)");
+            }
+
+            try {
+                dateTo = Date.valueOf(dateToParam);
+            } catch (IllegalArgumentException e) {
+                error.add("Ngày kết thúc nghỉ không hợp lệ. (Định dạng: yyyy-MM-dd)");
+            }
         }
-        if (dateto.before(now)) {
-            error.add("Ngày kết thúc nghỉ không thể là quá khứ.");
-            
+
+        // Kiểm tra logic ngày
+        if (error.isEmpty()) {
+            if (dateFrom.after(dateTo)) {
+                error.add("Ngày bắt đầu nghỉ không thể sau ngày kết thúc nghỉ.");
+            }
+            if (dateTo.before(now)) {
+                error.add("Ngày kết thúc nghỉ không thể là quá khứ.");
+            }
+            if (dateFrom.before(now)) {
+                error.add("Ngày bắt đầu nghỉ không thể là quá khứ.");
+            }
         }
-        if (datefrom.before(now)) {
-            error.add("Ngày bắt đầu nghỉ không thể là quá khứ.");
-            
-        }
-        if (dateto.before(datefrom)) {
-            error.add("Ngày kết thúc nghỉ không thể trước ngày bắt đầu nghỉ.");
-            
-        }
+
+        // Nếu có lỗi, chuyển về form nhập
         if (!error.isEmpty()) {
             request.setAttribute("error", error);
-            request.getRequestDispatcher("createForm.jsp").forward(request, response);
-            
-        }else{
-        RequestDAO requestdao = new RequestDAO();
-        Request re = new Request(0, account.getEmployeeId(), dateto, datefrom, now, Reason, "Pending");
-        requestdao.insert(re);
-        request.setAttribute("message", "Submit successfully");
-        request.getRequestDispatcher("createForm.jsp").forward(request, response);
-        
+            if (account.getRoleId() == 2) { // Manager
+                request.getRequestDispatcher("manager.jsp?action=create").forward(request, response);
+            } else { // Employee
+                request.getRequestDispatcher("createForm.jsp").forward(request, response);
+            }
+            return;
         }
-       
+
+        // Nếu không có lỗi, lưu vào database
+        RequestDAO requestdao = new RequestDAO();
+        Request re = new Request(0, account.getEmployeeId(), dateTo, dateFrom, now, reason, "Pending");
+        requestdao.insert(re);
+
+        request.setAttribute("message", "Submit successfully");
+
+        // Điều hướng về trang tương ứng
+        if (account.getRoleId() == 2) { // Manager
+            request.getRequestDispatcher("manager.jsp?action=create").forward(request, response);
+        } else {
+            request.getRequestDispatcher("createForm.jsp").forward(request, response);
+        }
     }
 
     /**

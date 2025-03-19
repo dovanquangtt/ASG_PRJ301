@@ -65,7 +65,11 @@ public class ViewepController extends HttpServlet {
         RequestDAO r = new RequestDAO();
         List<Request> list = r.getRequestByEmployeeId(account.getEmployeeId());
         request.setAttribute("list", list);
-        request.getRequestDispatcher("viewep.jsp").forward(request, response);
+        if (account.getRoleId() == 2) { // Manager
+            request.getRequestDispatcher("manager.jsp?action=view").forward(request, response);
+        } else {
+            request.getRequestDispatcher("viewep.jsp").forward(request, response);
+        }
 
     }
 

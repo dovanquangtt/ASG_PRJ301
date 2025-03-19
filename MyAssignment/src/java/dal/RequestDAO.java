@@ -19,7 +19,7 @@ public class RequestDAO extends DBContext {
 
     public List<Request> getRequestByManagerID(int managerId) {
         List<Request> requests = new ArrayList<>();
-        String sql = "select r.DateCreate,r.DateFrom,r.DateTo,r.Reason,r.Status,e.Id,e.Name \n"
+        String sql = "select r.Id, r.DateCreate,r.DateFrom,r.DateTo,r.Reason,r.Status,e.Id,e.Name \n"
                 + "from Request r \n"
                 + "inner join Employee  e on r.EmployeeId = e.Id \n"
                 + "where e.Parentemployee = ? ";
@@ -29,11 +29,12 @@ public class RequestDAO extends DBContext {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Request request = new Request();
-                request.setDateCreate(rs.getDate(1));
-                request.setDateFrom(rs.getDate(2));
-                request.setDateTo(rs.getDate(3));
-                request.setReason(rs.getString(4));
-                request.setStatus(rs.getString(5));
+                request.setId(rs.getInt(1));
+                request.setDateCreate(rs.getDate(2));
+                request.setDateFrom(rs.getDate(3));
+                request.setDateTo(rs.getDate(4));
+                request.setReason(rs.getString(5));
+                request.setStatus(rs.getString(6));
                 request.setEmployeeId(rs.getInt("Id")); // Employee ID
                 requests.add(request);
             }
@@ -152,23 +153,43 @@ public class RequestDAO extends DBContext {
 //            System.out.println("Không tìm thấy request với Id = " + testId);
 //        }
 //    }
+//    public static void main(String[] args) {
+//        // Bước 1: Chuẩn bị đối tượng Request
+//        Request request = new Request();
+//        request.setId(1); // Thay bằng ID hợp lệ trong cơ sở dữ liệu của bạn
+//        request.setDateFrom(Date.valueOf("2023-10-01")); // Ngày bắt đầu
+//        request.setDateTo(Date.valueOf("2023-10-05")); // Ngày kết thúc
+//        request.setReason("Cập nhật lý do mới"); // Lý do mới
+//
+//        // Bước 2: Tạo đối tượng RequestDAO và gọi hàm updateSatatusRequest
+//        RequestDAO dao = new RequestDAO();
+//        int result = dao.updateSatatusRequest(request);
+//
+//        // Bước 3: Kiểm tra kết quả
+//        if (result == -1) {
+//            System.out.println("Cập nhật không thành công hoặc có lỗi xảy ra.");
+//        } else {
+//            System.out.println("Cập nhật thành công. Số hàng ảnh hưởng: " + result);
+//        }
+//    }
     public static void main(String[] args) {
-        // Bước 1: Chuẩn bị đối tượng Request
-        Request request = new Request();
-        request.setId(1); // Thay bằng ID hợp lệ trong cơ sở dữ liệu của bạn
-        request.setDateFrom(Date.valueOf("2023-10-01")); // Ngày bắt đầu
-        request.setDateTo(Date.valueOf("2023-10-05")); // Ngày kết thúc
-        request.setReason("Cập nhật lý do mới"); // Lý do mới
-
-        // Bước 2: Tạo đối tượng RequestDAO và gọi hàm updateSatatusRequest
+        // Tạo đối tượng RequestDAO
         RequestDAO dao = new RequestDAO();
-        int result = dao.updateSatatusRequest(request);
 
-        // Bước 3: Kiểm tra kết quả
-        if (result == -1) {
-            System.out.println("Cập nhật không thành công hoặc có lỗi xảy ra.");
+        // Gán managerId cần test (thay đổi theo dữ liệu thực tế của bạn)
+        int managerId = 2;
+
+        // Gọi hàm getRequestByManagerID và nhận danh sách request
+        List<Request> requests = dao.getRequestByManagerID(managerId);
+
+        // Kiểm tra và in kết quả
+        if (requests.isEmpty()) {
+            System.out.println("Không có request nào cho managerId = " + managerId);
         } else {
-            System.out.println("Cập nhật thành công. Số hàng ảnh hưởng: " + result);
+            System.out.println("Danh sách request cho managerId = " + managerId + ":");
+            for (Request req : requests) {
+                System.out.println(req);
+            }
         }
     }
 

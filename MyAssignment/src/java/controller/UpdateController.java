@@ -11,6 +11,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.Account;
 import model.Request;
 
 /**
@@ -57,6 +59,8 @@ public class UpdateController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Account account = (Account) session.getAttribute("account");
         String idParam = request.getParameter("id");
         int id = Integer.parseInt(idParam);
 
@@ -68,7 +72,11 @@ public class UpdateController extends HttpServlet {
         request.setAttribute("requestData", req);
 
         // Chuyển tiếp đến trang createForm.jsp để hiển thị form với dữ liệu đã có
-        request.getRequestDispatcher("createForm.jsp").forward(request, response);
+        if (account.getRoleId() == 2) { // Manager
+            request.getRequestDispatcher("manager.jsp?action=create").forward(request, response);
+        } else {
+            request.getRequestDispatcher("createForm.jsp").forward(request, response);
+        }
     }
 
     /**

@@ -24,6 +24,10 @@
         <servlet-name>DeleteController</servlet-name>
         <servlet-class>controller.DeleteController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewMgController</servlet-name>
+        <servlet-class>controller.ViewMgController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -47,5 +51,9 @@
     <servlet-mapping>
         <servlet-name>DeleteController</servlet-name>
         <url-pattern>/delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewMgController</servlet-name>
+        <url-pattern>/viewmg</url-pattern>
     </servlet-mapping>
 </web-app>

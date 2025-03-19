@@ -9,7 +9,6 @@
 <div id="leaveForm" class="form-container">
     <h3>Leave Request Form</h3>
     <form action="req" method="POST">
-        <p><strong>User:</strong> Mr. Tèo, <strong>Role:</strong> Employee, <strong>Department:</strong> IT</p>
         <label>From:</label>
         <input type="date" name="startDate" style="width: 100%;">
         <br><br>

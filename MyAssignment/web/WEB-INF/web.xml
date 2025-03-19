@@ -52,8 +52,4 @@
         <servlet-name>DeleteController</servlet-name>
         <url-pattern>/delete</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ViewMgController</servlet-name>
-        <url-pattern>/viewmg</url-pattern>
-    </servlet-mapping>
 </web-app>

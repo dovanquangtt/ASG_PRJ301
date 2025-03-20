@@ -17,27 +17,32 @@
             <th>Status</th>
             <th>Action</th>
         </tr>
-        <tr style="background: #333;">
-            <td>Wedding Leave</td>
-            <td>1/1/2025</td>
-            <td>3/1/2025</td>
-            <td>Mr. F</td>
-            <td>Pending</td>
-            <td>
-                <button class="action-btn approve-btn">Approve</button>
-                <button class="action-btn reject-btn">Reject</button>
-            </td>
-        </tr>
-        <tr style="background: #333;">
-            <td>Vacation Leave</td>
-            <td>1/1/2025</td>
-            <td>5/1/2025</td>
-            <td>Mr. E</td>
-            <td>Pending</td>
-            <td>
-                <button class="action-btn approve-btn">Approve</button>
-                <button class="action-btn reject-btn">Reject</button>
-            </td>
-        </tr>
+        <c:forEach var="request" items="${allRequest}">
+            <tr>
+                <td>${request.getReason()}</td>
+                <td>${request.getDateFrom()}</td>
+                <td>${request.getDateTo()}</td>
+                <td>${request.geteName()}</td>
+                <td>${request.getStatus()}</td>
+               <td>
+            <c:if test="${request.getStatus() eq 'Pending'}">
+                <form action="review" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="${request.getId()}" />
+                    <input type="hidden" name="action" value="approve" />
+                    <button type="submit" style="color: white; text-decoration: none; background: green; padding: 5px 10px; border-radius: 5px;">Approve</button>
+                </form>
+                <form action="review" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="${request.getId()}" />
+                    <input type="hidden" name="action" value="reject" />
+                    <button type="submit" style="color: white; text-decoration: none; background: red; padding: 5px 10px; border-radius: 5px;">Reject</button>
+                </form>
+            </c:if>
+            <c:if test="${request.getStatus() ne 'Pending'}">
+                <!-- Có thể hiển thị thông báo hoặc ẩn nút khi đơn không ở trạng thái Pending -->
+                <span>No Action</span>
+            </c:if>
+        </td>
+        </c:forEach>
+
     </table>
 </div>

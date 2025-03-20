@@ -10,6 +10,7 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import model.Request;
+import model.Request2;
 
 /**
  *
@@ -17,8 +18,8 @@ import model.Request;
  */
 public class RequestDAO extends DBContext {
 
-    public List<Request> getRequestByManagerID(int managerId) {
-        List<Request> requests = new ArrayList<>();
+    public List<Request2> getRequestByManagerID(int managerId) {
+        List<Request2> list = new ArrayList<>();
         String sql = "select r.Id, r.DateCreate,r.DateFrom,r.DateTo,r.Reason,r.Status,e.Id,e.Name \n"
                 + "from Request r \n"
                 + "inner join Employee  e on r.EmployeeId = e.Id \n"
@@ -28,21 +29,22 @@ public class RequestDAO extends DBContext {
             ps.setInt(1, managerId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Request request = new Request();
-                request.setId(rs.getInt(1));
-                request.setDateCreate(rs.getDate(2));
-                request.setDateFrom(rs.getDate(3));
-                request.setDateTo(rs.getDate(4));
-                request.setReason(rs.getString(5));
-                request.setStatus(rs.getString(6));
-                request.setEmployeeId(rs.getInt("Id")); // Employee ID
-                requests.add(request);
+                Request2 request2 = new Request2();
+                request2.setId(rs.getInt(1));
+                request2.setDateCreate(rs.getDate(2));
+                request2.setDateFrom(rs.getDate(3));
+                request2.setDateTo(rs.getDate(4));
+                request2.setReason(rs.getString(5));
+                request2.setStatus(rs.getString(6));
+                request2.seteId(rs.getInt(7)); // Employee ID
+                request2.seteName(rs.getString(8));
+                list.add(request2);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return requests;
+        return list;
     }
 
     public Request getRequestbyId(int Id) {
@@ -100,6 +102,18 @@ public class RequestDAO extends DBContext {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public void updateSatatusEmployee(int id, String Status) {
+        String sql = "update Request SET Status = ?  where  Id = ? ";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, Status);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Request> getRequestByEmployeeId(int employeeId) {
@@ -172,25 +186,24 @@ public class RequestDAO extends DBContext {
 //            System.out.println("Cập nhật thành công. Số hàng ảnh hưởng: " + result);
 //        }
 //    }
-    public static void main(String[] args) {
-        // Tạo đối tượng RequestDAO
-        RequestDAO dao = new RequestDAO();
-
-        // Gán managerId cần test (thay đổi theo dữ liệu thực tế của bạn)
-        int managerId = 2;
-
-        // Gọi hàm getRequestByManagerID và nhận danh sách request
-        List<Request> requests = dao.getRequestByManagerID(managerId);
-
-        // Kiểm tra và in kết quả
-        if (requests.isEmpty()) {
-            System.out.println("Không có request nào cho managerId = " + managerId);
-        } else {
-            System.out.println("Danh sách request cho managerId = " + managerId + ":");
-            for (Request req : requests) {
-                System.out.println(req);
-            }
-        }
-    }
-
+//    public static void main(String[] args) {
+//        // Tạo đối tượng RequestDAO
+//        RequestDAO dao = new RequestDAO();
+//
+//        // Gán managerId cần test (thay đổi theo dữ liệu thực tế của bạn)
+//        int managerId = 2;
+//
+//        // Gọi hàm getRequestByManagerID và nhận danh sách request
+//        List<Request2> requests = dao.getRequestByManagerID(managerId);
+//
+//        // Kiểm tra và in kết quả
+//        if (requests.isEmpty()) {
+//            System.out.println("Không có request nào cho managerId = " + managerId);
+//        } else {
+//            System.out.println("Danh sách request cho managerId = " + managerId + ":");
+//            for (Request2 req : requests) {
+//                System.out.println(req);
+//            }
+//        }
+//    }
 }

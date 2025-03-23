@@ -32,7 +32,6 @@
             <a href="manager.jsp?action=create">Create Leave Request</a>
             <a href="http://localhost:9999/MyAssignment/viewep">View Requests</a>
             <a href="http://localhost:9999/MyAssignment/review">Approve Requests</a>
-            <a href="manager.jsp?action=labor">Labor Status</a>
         </div>
         <div class="content">
             <%
@@ -53,10 +52,6 @@
                 } else if (action.equals("approve")) {
             %>
             <jsp:include page="approveMg.jsp" />
-            <%    
-                } else if (action.equals("labor")) {
-            %>
-            <jsp:include page="labor.jsp" />
             <%    
                 }
             %>

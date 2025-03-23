@@ -1,6 +1,6 @@
 <%-- 
-    Document   : approveMg
-    Created on : Mar 18, 2025, 10:07:15 PM
+    Document   : approveAd
+    Created on : Mar 23, 2025, 10:34:06 PM
     Author     : admin
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

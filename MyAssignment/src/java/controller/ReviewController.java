@@ -66,7 +66,12 @@ public class ReviewController extends HttpServlet {
         RequestDAO r = new RequestDAO();
         List<Request2> list = r.getRequestByManagerID(account.getEmployeeId());
         request.setAttribute("allRequest", list);
-        request.getRequestDispatcher("manager.jsp?action=approve").forward(request, response);
+        if (account.getRoleId() == 1) { // Manager
+                request.getRequestDispatcher("admin.jsp?action=approve").forward(request, response);
+            }
+        else if (account.getRoleId() == 2) { // Manager
+                request.getRequestDispatcher("manager.jsp?action=approve").forward(request, response);
+            }
     }
 
     /**

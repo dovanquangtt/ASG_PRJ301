@@ -38,26 +38,6 @@ public class AccountDAO extends DBContext {
         return null;
     }
 
-    public List<Account> getAllAccount() {
-        List<Account> list = new ArrayList<>();
-        String sql = "select * from Account";
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Account account = new Account();
-                account.setId(rs.getInt(1));
-                account.setUsername(rs.getString(2));
-                account.setPassword(rs.getString(3));
-                account.setRoleId(rs.getInt(4));
-                list.add(account);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();;
-        }
-        return list;
-    }
-
     public Account getAccountById(int id) {
         String sql = "SELECT * FROM accounts WHERE id = ?";
         try {
